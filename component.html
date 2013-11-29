@@ -1,112 +1,116 @@
 <polymer-element name="ceci-counter" attributes="countItem increment" extends="ceci-element">
-	<template>
-		<link rel="stylesheet" href="component.css">
-		<!-- ADD: remember to bind event handlers using the on-event syntax -->
-		<div class="counter">
-			<span class="count-wrapper">
-				<span id="count" class="count">0</span>
-				<span id="countItem" class="count-label"></span>
-			</span>
-	    </div>
-	</template>
-	<description>
-	    Listens for a message and counts
-	  </description>
-	<tags>starter,math</tags>
-	<thumbnail>
-	    <img src="thumbnail.png" />
-	</thumbnail>
-	<!-- Remove: <friends>app-button</friends> -->
-	<!-- ADD: 2 content elements: for ceci-broadcast and ceci-listen -->
+  <template>
+    <link rel="stylesheet" href="component.css">
+    <!-- ADD: remember to bind event handlers using the on-event syntax -->
+    <div class="counter">
+      <span class="count-wrapper">
+        <span id="count" class="count">0</span>
+        <span id="countItem" class="count-label"></span>
+      </span>
+    </div>
+    <shadow></shadow>
+  </template>
+  <description>
+      Listens for a message and counts
+    </description>
+  <tags>starter,math</tags>
+  <thumbnail>
+      <img src="thumbnail.png" />
+  </thumbnail>
+  <!-- Remove: <friends>app-button</friends> -->
+  <!-- ADD: 2 content elements: for ceci-broadcast and ceci-listen -->
     <content select="ceci-broadcast"></content>
     <content select="ceci-listen"></content>
     <script>
-    	Polymer("ceci-counter", {
-    		ready: function(){
-    		},
-    		count: 0,
-    		// publish countItem and increment since they are configurable vars in the designer
-    		// publish them by include them in the <polymer-element>'s "attributes" attribute
-    		countItem: (this.countItem || ""), // this is the unit
-    		increment: (this.increment || 1),
-    		// ADD: property changed watcher
-    		// http://www.polymer-project.org/polymer.html#change-watchers
-			countItemChanged: function(oldValue, newValue){
-				// countItem is the unit
-				this.updateUnitShown();
-			},
-			updateDisplay: function(){
-				this.$.count.innerHTML = this.count;
-				if ( this.countItem ){
-					this.updateUnitShown();
-				}
-			},
-			updateUnitShown: function(){
-				if ( this.countItem && this.countItem !== "" ){ 
-					var label = this.countItem.trim();
-					var pluralChar = "";
-					if( Math.abs(this.count) > 1 ){
-						var lastChar = label.charAt(label.length - 1);
-						if ( lastChar ){
-							if( lastChar.toLowerCase() != "s" ){
-								pluralChar = "s";
-								if ( lastChar == lastChar.toUpperCase() ){
-									pluralChar = pluralChar.toUpperCase();
-								}
-							}
-						}
-					}
-					this.$.countItem.innerHTML = " " + label + pluralChar;
-				}else{
-					this.$.countItem.innerHTML = "";
-				}
-			},
-			countUp: function(){
-				this.count += parseInt(this.increment);
-				this.updateDisplay();
-			},
-			countDown: function(){
-				this.count -= parseInt(this.increment);
-				this.updateDisplay();
-			},
-			resetCount: function(){
-				this.count = 0;
-				this.updateDisplay();
-			},
-    		ceci: {
-    			broadcasts: [ "update" ],
-    			defaultBroadcasts: [ "update" ],
-    			listeners: {
-    				'countUp': {
-						description: "Increment the total by the increment value",
-						name: "countUp"
-    				},
-    				'countDown': {
-						description: "Decrement the total by the increment value",
-						name: "countDown"
-    				},
-    				'resetCount': {
-						description: "Reset the total to 0",
-						name: "resetCount"
-    				}
-    			},
-    			defaultListeners: ["countUp"],
-    			editable: {
-    				'countItem': {
-						type: "text",
-						description: "Name for what you're counting",
-						name: "Count Item"
-					},
-					'incrementBy': {
-						type: "number",
-						min : 1,
-						description: "Count up or down with this number",
-						name: "Increment By"
-					}
-    			}
-    		}
-    	});
-   	</script>
+      Polymer("ceci-counter", {
+        ready: function(){
+          this.super();
+        },
+        count: 0,
+        // publish countItem and increment since they are configurable vars in the designer
+        // publish them by include them in the <polymer-element>'s "attributes" attribute
+        countItem: (this.countItem || ""), // this is the unit
+        increment: (this.increment || 1),
+        // ADD: property changed watcher
+        // http://www.polymer-project.org/polymer.html#change-watchers
+      countItemChanged: function(oldValue, newValue){
+        // countItem is the unit
+        this.updateUnitShown();
+      },
+      updateDisplay: function(){
+        this.$.count.innerHTML = this.count;
+        if ( this.countItem ){
+          this.updateUnitShown();
+        }
+      },
+      updateUnitShown: function(){
+        if ( this.countItem && this.countItem !== "" ){ 
+          var label = this.countItem.trim();
+          var pluralChar = "";
+          if( Math.abs(this.count) > 1 ){
+            var lastChar = label.charAt(label.length - 1);
+            if ( lastChar ){
+              if( lastChar.toLowerCase() != "s" ){
+                pluralChar = "s";
+                if ( lastChar == lastChar.toUpperCase() ){
+                  pluralChar = pluralChar.toUpperCase();
+                }
+              }
+            }
+          }
+          this.$.countItem.innerHTML = " " + label + pluralChar;
+        }else{
+          this.$.countItem.innerHTML = "";
+        }
+      },
+      countUp: function(){
+        this.count += parseInt(this.increment);
+        this.updateDisplay();
+      },
+      countDown: function(){
+        this.count -= parseInt(this.increment);
+        this.updateDisplay();
+      },
+      resetCount: function(){
+        this.count = 0;
+        this.updateDisplay();
+      },
+        ceci: {
+          broadcasts: {
+            update: 'Occurs when counter is clicked.'
+          },
+          defaultBroadcasts: [],
+          listeners: {
+            'countUp': {
+            description: "Increment the total by the increment value",
+            name: "countUp"
+            },
+            'countDown': {
+            description: "Decrement the total by the increment value",
+            name: "countDown"
+            },
+            'resetCount': {
+            description: "Reset the total to 0",
+            name: "resetCount"
+            }
+          },
+          defaultListeners: ["countUp"],
+          editable: {
+            'countItem': {
+            type: "text",
+            description: "Name for what you're counting",
+            name: "Count Item"
+          },
+          'incrementBy': {
+            type: "number",
+            min : 1,
+            description: "Count up or down with this number",
+            name: "Increment By"
+          }
+          }
+        }
+      });
+    </script>
 </polymer-element>
 
 
