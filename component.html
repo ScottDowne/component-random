@@ -33,48 +33,48 @@
         increment: (this.increment || 1),
         // ADD: property changed watcher
         // http://www.polymer-project.org/polymer.html#change-watchers
-      countItemChanged: function(oldValue, newValue){
-        // countItem is the unit
-        this.updateUnitShown();
-      },
-      updateDisplay: function(){
-        this.$.count.innerHTML = this.count;
-        if ( this.countItem ){
+        countItemChanged: function(oldValue, newValue){
+          // countItem is the unit
           this.updateUnitShown();
-        }
-      },
-      updateUnitShown: function(){
-        if ( this.countItem && this.countItem !== "" ){ 
-          var label = this.countItem.trim();
-          var pluralChar = "";
-          if( Math.abs(this.count) > 1 ){
-            var lastChar = label.charAt(label.length - 1);
-            if ( lastChar ){
-              if( lastChar.toLowerCase() != "s" ){
-                pluralChar = "s";
-                if ( lastChar == lastChar.toUpperCase() ){
-                  pluralChar = pluralChar.toUpperCase();
+        },
+        updateDisplay: function(){
+          this.$.count.innerHTML = this.count;
+          if ( this.countItem ){
+            this.updateUnitShown();
+          }
+        },
+        updateUnitShown: function(){
+          if ( this.countItem && this.countItem !== "" ){ 
+            var label = this.countItem.trim();
+            var pluralChar = "";
+            if( Math.abs(this.count) > 1 ){
+              var lastChar = label.charAt(label.length - 1);
+              if ( lastChar ){
+                if( lastChar.toLowerCase() != "s" ){
+                  pluralChar = "s";
+                  if ( lastChar == lastChar.toUpperCase() ){
+                    pluralChar = pluralChar.toUpperCase();
+                  }
                 }
               }
             }
+            this.$.countItem.innerHTML = " " + label + pluralChar;
+          }else{
+            this.$.countItem.innerHTML = "";
           }
-          this.$.countItem.innerHTML = " " + label + pluralChar;
-        }else{
-          this.$.countItem.innerHTML = "";
-        }
-      },
-      countUp: function(){
-        this.count += parseInt(this.increment, 10);
-        this.updateDisplay();
-      },
-      countDown: function(){
-        this.count -= parseInt(this.increment, 10);
-        this.updateDisplay();
-      },
-      resetCount: function(){
-        this.count = 0;
-        this.updateDisplay();
-      },
+        },
+        countUp: function(){
+          this.count += parseInt(this.increment, 10);
+          this.updateDisplay();
+        },
+        countDown: function(){
+          this.count -= parseInt(this.increment, 10);
+          this.updateDisplay();
+        },
+        resetCount: function(){
+          this.count = 0;
+          this.updateDisplay();
+        },
         ceci: {
           broadcasts: {
             update: 'Occurs when counter is clicked.'
@@ -82,31 +82,31 @@
           defaultBroadcasts: [],
           listeners: {
             'countUp': {
-            description: "Increment the total by the increment value",
-            name: "countUp"
+              description: "Increment the total by the increment value",
+              name: "countUp"
             },
             'countDown': {
-            description: "Decrement the total by the increment value",
-            name: "countDown"
+              description: "Decrement the total by the increment value",
+              name: "countDown"
             },
             'resetCount': {
-            description: "Reset the total to 0",
-            name: "resetCount"
+              description: "Reset the total to 0",
+              name: "resetCount"
             }
           },
           defaultListeners: ["countUp"],
           editable: {
             'countItem': {
-            type: "text",
-            description: "Name for what you're counting",
-            name: "Count Item"
-          },
-          'incrementBy': {
-            type: "number",
-            min : 1,
-            description: "Count up or down with this number",
-            name: "Increment By"
-          }
+              type: "text",
+              description: "Name for what you're counting",
+              name: "Count Item"
+            },
+            'incrementBy': {
+              type: "number",
+              min : 1,
+              description: "Count up or down with this number",
+              name: "Increment By"
+            }
           }
         }
       });
