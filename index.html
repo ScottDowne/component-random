@@ -24,11 +24,13 @@
     <script>
       mocha.setup({ui: 'tdd', slow: 2000, htmlbase: ''});
     </script>
-    <script src="test/js/button.js"></script>
+    <script src="test/js/counter.js"></script>
     <script>
       mocha.run();
+      // Q: what's the diff between the following 2 sources?
+      // Q: do we even need component.html?
       addSource("component source", "xml", "component.html");
-      addSource("test source", "xml", "test/html/buttonSpec.html");
+      addSource("test source", "xml", "test/html/counterSpec.html");
     </script>
   </body>
 </html>
