@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+<head>
+  <title>counter tests</title>
+  <script src="../../../tools/test/htmltest.js"></script>
+  <script src="../../../tools/test/chai/chai.js"></script>
+  <link rel="import" href="../../../appmaker/public/ceci/ceci-element.html">
+  <link rel="import" href="../../../appmaker/public/ceci/ceci-element-base.html">
+  <link rel="import" href="../../../appmaker/public/ceci/ceci-broadcast.html">
+  <link rel="import" href="../../../appmaker/public/ceci/ceci-listen.html">
+  <link rel="import" href="../../../appmaker/public/ceci/ceci-app.html">
+  <link rel="import" href="../../../appmaker/public/ceci/ceci-card-base.html">
+  <link rel="import" href="../../../appmaker/public/ceci/ceci-card.html">
+  <link rel="import" href="../../../appmaker/public/ceci/test/fixtures/ceci-value-holder.html">
+  <!-- This is the component we're actually testing -->
+  <link rel="import" href="../../component.html">
+  <link rel="import" href="../../../component-button/component.html">
+  <script src="../../../appmaker/public/vendor/polymer/polymer.min.js"></script>
+</head>
+<body>
+  <!-- The skeleton app we'll be using to test -->
+  <ceci-app id="hello-app">
+    <ceci-card visible>
+      <ceci-top>
+        <ceci-counter id="hello-counter" class="hi" countItem="" increment="1">
+        </ceci-counter>
+      </ceci-top>
+      <ceci-middle>
+        <ceci-button id="decrement-button" class="hi" label="-1">
+          <ceci-broadcast on="yellow" from="click"></ceci-broadcast>
+        </ceci-button>
+        <ceci-button id="increment-button" class="hi" label="+1">
+          <ceci-broadcast on="red" from="click"></ceci-broadcast>
+        </ceci-button>
+        <ceci-value-holder id="value-holder">
+          <ceci-listen id="count-up" on="blue" for="countUp"></ceci-listen>
+          <ceci-listen on="yellow" for="countDown"></ceci-listen>
+          <ceci-listen on="red" for="resetCount"></ceci-listen>
+        </ceci-value-holder>
+      </ceci-middle>
+      <ceci-bottom>
+      </ceci-bottom>
+    </ceci-card>
+  </ceci-app>
+
+  <script>
+    var assert = chai.assert;
+    document.addEventListener('WebComponentsReady', function() {
+      var app = document.querySelector('ceci-app');
+      var card = document.querySelector('ceci-card');
+      var counter = document.querySelector('ceci-counter');
+      // console.log(counter);
+      // assert.equal(counter.getAttribute("increment"),1);
+      // refer to https://github.com/mozilla-appmaker/component-counter/blob/0a53902e63d7974e14b4c13a03ff1c8967cfffc2/index.html
+      assert.equal(app.countCards(), 1);
+      app.addCard();
+      assert.equal(app.countCards(), 2);
+
+      assert.equal(counter.count, 0);
+      counter.countUp();
+      assert.equal(counter.count, 1);
+      counter.countDown();
+      assert.equal(counter.count, 0);
+      counter.countUp();
+      counter.countUp();
+      assert.equal(counter.count, 2);
+      counter.resetCount();
+      assert.equal(counter.count, 0);
+
+      done(); // IMPORTANT that the suite ends with a call to done()
+    });
+  </script>
+</body>
+</html>
