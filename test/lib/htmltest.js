@@ -12,7 +12,7 @@ if (window.top === window) {
     d.style.cssText = 'padding: 6px; background-color: lightgreen;';
     d.textContent = 'Passed';
     document.body.insertBefore(d, document.body.firstChild);
-  }
+  };
   window.onerror = function(x) {
     var d = document.createElement('pre');
     d.style.cssText = 'padding: 6px; background-color: #FFE0E0;';
@@ -24,7 +24,7 @@ if (window.top === window) {
 {
   window.done = function() {
     parent.postMessage('ok', '*');
-  }
+  };
   window.onerror = function(x) {
     parent.postMessage({error: x}, '*');
   };

@@ -64,11 +64,11 @@
         }
       },
       countUp: function(){
-        this.count += parseInt(this.increment);
+        this.count += parseInt(this.increment, 10);
         this.updateDisplay();
       },
       countDown: function(){
-        this.count -= parseInt(this.increment);
+        this.count -= parseInt(this.increment, 10);
         this.updateDisplay();
       },
       resetCount: function(){

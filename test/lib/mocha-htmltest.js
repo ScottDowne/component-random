@@ -47,7 +47,7 @@
       next = done;
       iframe.src = base + src + "?" + Math.random();
     });
-  };
+  }
 
   function htmlSuite(inName, inFn) {
     suite(inName, function() {
@@ -55,7 +55,7 @@
       teardown(htmlTeardown);
       inFn();
     });
-  };
+  }
 
   window.htmlTest = htmlTest;
   window.htmlSuite = htmlSuite;
