@@ -25,9 +25,8 @@
       Polymer("ceci-counter", {
         ready: function(){
           this.countItem = this.getAttribute('countItem') || "";
-          this.increment = this.getAttribute('increment') || 1;
+          this.increment = parseInt(this.getAttribute('increment'), 10) || 1;
           this.super();
-          console.log(this.countItem);
         },
         count: 0,
         // publish countItem and increment since they are configurable vars in the designer
