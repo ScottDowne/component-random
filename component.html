@@ -24,8 +24,8 @@
     <script>
       Polymer("ceci-counter", {
         ready: function(){
-          this.countItem = this.getAttribute('countItem');
-          this.increment = this.getAttribute('increment');
+          this.countItem = this.getAttribute('countItem') || "";
+          this.increment = this.getAttribute('increment') || 1;
           this.super();
           console.log(this.countItem);
         },
