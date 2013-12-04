@@ -24,7 +24,10 @@
     <script>
       Polymer("ceci-counter", {
         ready: function(){
+          this.countItem = this.getAttribute('countItem');
+          this.increment = this.getAttribute('increment');
           this.super();
+          console.log(this.countItem);
         },
         count: 0,
         // publish countItem and increment since they are configurable vars in the designer
@@ -44,7 +47,7 @@
           }
         },
         updateUnitShown: function(){
-          if ( this.countItem && this.countItem !== "" ){ 
+          if ( this.countItem && this.countItem !== "" ){
             var label = this.countItem.trim();
             var pluralChar = "";
             if( Math.abs(this.count) > 1 ){
@@ -101,7 +104,7 @@
               description: "Name for what you're counting",
               name: "Count Item"
             },
-            'incrementBy': {
+            'increment': {
               type: "number",
               min : 1,
               description: "Count up or down with this number",
