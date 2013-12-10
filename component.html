@@ -9,6 +9,44 @@
       </span>
     </div>
     <shadow></shadow>
+    <script type="text/json" id="ceci-definition">
+      {
+        "broadcasts": {
+          "update": {
+            "label": "Update",
+            "description": "Occurs when counter is clicked."
+          }
+        },
+        "listeners": {
+          "countUp": {
+            "description": "Increment the total by the increment value",
+            "label": "Count Up",
+            "default": true
+          },
+          "countDown": {
+            "description": "Decrement the total by the increment value",
+            "label": "Count Down"
+          },
+          "resetCount": {
+            "description": "Reset the total to 0",
+            "label": "Reset Count"
+          }
+        },
+        "attributes": {
+          "countItem": {
+            "description": "Name for what you're counting",
+            "label": "Count Item",
+            "editable": "text"
+          },
+          "increment": {
+            "description": "Count up or down with this number",
+            "label": "Increment By",
+            "editable": "number",
+            "min" : 1
+          }
+        }
+      }
+    </script>
   </template>
   <description>
       Listens for a message and counts
@@ -18,9 +56,6 @@
       <img src="thumbnail.png" />
   </thumbnail>
   <!-- Remove: <friends>app-button</friends> -->
-  <!-- ADD: 2 content elements: for ceci-broadcast and ceci-listen -->
-    <content select="ceci-broadcast"></content>
-    <content select="ceci-listen"></content>
     <script>
       Polymer("ceci-counter", {
         ready: function(){
@@ -77,51 +112,7 @@
           this.count = 0;
           this.updateDisplay();
         },
-        ceci: {
-          broadcasts: {
-            update: 'Occurs when counter is clicked.'
-          },
-          defaultBroadcasts: [],
-          listeners: {
-            'countUp': {
-              description: "Increment the total by the increment value",
-              name: "countUp"
-            },
-            'countDown': {
-              description: "Decrement the total by the increment value",
-              name: "countDown"
-            },
-            'resetCount': {
-              description: "Reset the total to 0",
-              name: "resetCount"
-            }
-          },
-          defaultListeners: ["countUp"],
-          editable: {
-            'countItem': {
-              type: "text",
-              description: "Name for what you're counting",
-              name: "Count Item"
-            },
-            'increment': {
-              type: "number",
-              min : 1,
-              description: "Count up or down with this number",
-              name: "Increment By"
-            }
-          }
-        }
+        SMOO: function () {}
       });
     </script>
 </polymer-element>
-
-
-
-
-
-
-
-
-
-
-
