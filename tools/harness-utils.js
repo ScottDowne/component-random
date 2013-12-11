@@ -51,6 +51,10 @@
           el.setAttribute('for', forAttribute);
           return el;
         },
+        broadcast: function (onAttribute, data) {
+          data = data || '';
+          iframeDocument.dispatchEvent(new iframeWindow.CustomEvent(onAttribute, {detail: {data: data}}));
+        },
         runIframeTest: function (name, callback) {
           if (handler.iframeTests[name]) {
             handler.iframeTests[name](callback);

@@ -1,20 +1,21 @@
-<polymer-element name="ceci-counter" attributes="countItem increment" extends="ceci-element">
+<polymer-element name="ceci-counter" extends="ceci-element" attributes="unit increment value">
   <template>
     <link rel="stylesheet" href="component.css">
     <!-- ADD: remember to bind event handlers using the on-event syntax -->
     <div class="counter">
       <span class="count-wrapper">
-        <span id="count" class="count">0</span>
-        <span id="countItem" class="count-label"></span>
+        <span id="value" class="count">{{value}}</span>
+        <span id="unit" class="count-label"></span>
       </span>
     </div>
     <shadow></shadow>
     <script type="text/json" id="ceci-definition">
       {
         "broadcasts": {
-          "update": {
-            "label": "Update",
-            "description": "Occurs when counter is clicked."
+          "count": {
+            "label": "Count",
+            "description": "Occurs when counter increases or decreases.",
+            "default": true
           }
         },
         "listeners": {
@@ -28,18 +29,18 @@
             "label": "Count Down"
           },
           "resetCount": {
-            "description": "Reset the total to 0",
+            "description": "Reset the total to 0.",
             "label": "Reset Count"
           }
         },
         "attributes": {
-          "countItem": {
-            "description": "Name for what you're counting",
-            "label": "Count Item",
+          "unit": {
+            "description": "Name for items which are being counted.",
+            "label": "Unit",
             "editable": "text"
           },
           "increment": {
-            "description": "Count up or down with this number",
+            "description": "Count up or down with this number.",
             "label": "Increment By",
             "editable": "number",
             "min" : 1
@@ -59,60 +60,56 @@
     <script>
       Polymer("ceci-counter", {
         ready: function(){
-          this.countItem = this.getAttribute('countItem') || "";
-          this.increment = parseInt(this.getAttribute('increment'), 10) || 1;
+          this.increment = Number(this.increment) || 1;
+          this.value = Number(this.value) || 0;
+          this.updateDisplay();
           this.super();
         },
-        count: 0,
-        // publish countItem and increment since they are configurable vars in the designer
-        // publish them by include them in the <polymer-element>'s "attributes" attribute
-        countItem: (this.countItem || ""), // this is the unit
-        increment: (this.increment || 1),
-        // ADD: property changed watcher
-        // http://www.polymer-project.org/polymer.html#change-watchers
-        countItemChanged: function(oldValue, newValue){
-          // countItem is the unit
+
+        value: 0,
+        increment: 1,
+        unit: 'Sprocket',
+
+        incrementChanged: function (oldValue, newValue) {
+          this.increment = Number(this.increment) || 0;
+        },
+        unitChanged: function (oldValue, newValue) {
+          this.$.value.innerHTML = this.value;
           this.updateUnitShown();
         },
-        updateDisplay: function(){
-          this.$.count.innerHTML = this.count;
-          if ( this.countItem ){
+        updateDisplay: function () {
+          if ( this.unit ){
             this.updateUnitShown();
           }
         },
-        updateUnitShown: function(){
-          if ( this.countItem && this.countItem !== "" ){
-            var label = this.countItem.trim();
-            var pluralChar = "";
-            if( Math.abs(this.count) > 1 ){
-              var lastChar = label.charAt(label.length - 1);
-              if ( lastChar ){
-                if( lastChar.toLowerCase() != "s" ){
-                  pluralChar = "s";
-                  if ( lastChar == lastChar.toUpperCase() ){
-                    pluralChar = pluralChar.toUpperCase();
-                  }
-                }
-              }
+        updateUnitShown: function () {
+          if (this.unit) {
+            var unit = this.unit.trim();
+
+            if (unit.length > 0) {
+              var pluralChar = Number(this.value) !== 1 && unit[unit.length - 1] !== 's' ? 's' : '';
+              pluralChar = unit[unit.length - 1] === unit[unit.length - 1].toUpperCase() ? pluralChar.toUpperCase() : pluralChar;
+              this.$.unit.innerHTML = " " + unit + pluralChar;
             }
-            this.$.countItem.innerHTML = " " + label + pluralChar;
-          }else{
-            this.$.countItem.innerHTML = "";
+          }
+          else {
+            this.$.unit.innerHTML = "";
           }
         },
-        countUp: function(){
-          this.count += parseInt(this.increment, 10);
+        valueChanged: function (oldValue, newValue) {
+          // This function is called as a side-effect of countUp/countDown.
           this.updateDisplay();
         },
-        countDown: function(){
-          this.count -= parseInt(this.increment, 10);
-          this.updateDisplay();
+        countUp: function () {
+          this.value = Number(this.value) + Number(this.increment, 10);
         },
-        resetCount: function(){
+        countDown: function () {
+          this.value = Number(this.value) - Number(this.increment, 10);
+        },
+        resetCount: function () {
           this.count = 0;
           this.updateDisplay();
-        },
-        SMOO: function () {}
+        }
       });
     </script>
 </polymer-element>
