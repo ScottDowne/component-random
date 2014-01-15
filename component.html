@@ -56,10 +56,9 @@
   <thumbnail>
       <img src="thumbnail.png" />
   </thumbnail>
-  <!-- Remove: <friends>app-button</friends> -->
     <script>
       Polymer("ceci-counter", {
-        ready: function(){
+        ready: function() {
           this.increment = Number(this.increment) || 1;
           this.value = Number(this.value) || 0;
           this.updateDisplay();
@@ -70,19 +69,19 @@
         increment: 1,
         unit: 'Sprocket',
 
-        incrementChanged: function (oldValue, newValue) {
+        incrementChanged: function(oldValue, newValue) {
           this.increment = Number(this.increment) || 0;
         },
-        unitChanged: function (oldValue, newValue) {
+        unitChanged: function(oldValue, newValue) {
           this.$.value.innerHTML = this.value;
           this.updateUnitShown();
         },
-        updateDisplay: function () {
-          if ( this.unit ){
+        updateDisplay: function() {
+          if (this.unit){
             this.updateUnitShown();
           }
         },
-        updateUnitShown: function () {
+        updateUnitShown: function() {
           if (this.unit) {
             var unit = this.unit.trim();
 
@@ -96,17 +95,17 @@
             this.$.unit.innerHTML = "";
           }
         },
-        valueChanged: function (oldValue, newValue) {
+        valueChanged: function(oldValue, newValue) {
           // This function is called as a side-effect of countUp/countDown.
           this.updateDisplay();
         },
-        countUp: function () {
+        countUp: function() {
           this.value = Number(this.value) + Number(this.increment, 10);
         },
-        countDown: function () {
+        countDown: function() {
           this.value = Number(this.value) - Number(this.increment, 10);
         },
-        resetCount: function () {
+        resetCount: function() {
           this.count = 0;
           this.updateDisplay();
         }
