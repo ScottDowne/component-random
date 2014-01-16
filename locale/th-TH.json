@@ -1,0 +1,7 @@
+{
+	"ceci-counter": "นับเลข",
+	"ceci-counter/attributes/unit/label": "ชื่อจำนวนนับ",
+	"ceci-counter/attributes/unit/description": "ชื่อสิ่งที่กำลังนับ",
+	"ceci-counter/attributes/increment/label": "เพิ่มขึ้นโดย",
+	"ceci-counter/attributes/increment/description": "นับเพิ่มขึ้นโดยเลขนี้"
+}
