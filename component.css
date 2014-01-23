@@ -1,23 +1,21 @@
 :host {
   display: block;
   width: 100%;
-  height: 50px;
 }
 
 :host .counter {
-  line-height: 3.8rem;
   text-align: center;
   font-size: 1.6rem;
-  font-family: "FiraSans", sans-serif;
-  padding: .5rem 0rem;
-  background: #0Da;
+  padding: 8px 0px;
+  background: #DDD;
   color: #666;
 }
 
 :host .counter .count-wrapper {
+  display: inline-block;
   background: white;
-  padding: .5rem 1rem;
-  border-radius: .5rem;
-  -moz-border-radius: .5rem;
-  border-bottom: solid 1px #CCC;
+  padding: 5px 12px;
+  border-radius: 5px;
+  border: solid 1px #CCC;
+  border-width: 1px 1px 2px 1px;
 }

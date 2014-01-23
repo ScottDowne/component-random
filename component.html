@@ -1,29 +1,27 @@
 <polymer-element name="ceci-counter" extends="ceci-element" attributes="unit increment value">
   <template>
     <link rel="stylesheet" href="component.css">
-    <!-- ADD: remember to bind event handlers using the on-event syntax -->
     <div class="counter">
-      <span class="count-wrapper">
+      <div class="count-wrapper">
         <span id="value" class="count">{{value}}</span>
         <span id="unit" class="count-label"></span>
-      </span>
+      </div>
     </div>
     <shadow></shadow>
     <script type="text/json" id="ceci-definition">
       {
         "name": "Counter",
         "broadcasts": {
-          "count": {
-            "label": "Count",
-            "description": "Occurs when counter increases or decreases.",
-            "default": true
+          "currentCount": {
+            "label": "Current Count",
+            "description": "Broadcasts the current count."
           }
         },
         "listeners": {
           "countUp": {
             "description": "Increment the total by the increment value",
             "label": "Count Up",
-            "default": true
+            "default" : true
           },
           "countDown": {
             "description": "Decrement the total by the increment value",
@@ -65,24 +63,17 @@
           this.updateDisplay();
           this.super();
         },
-
         value: 0,
         increment: 1,
         unit: 'Sprocket',
-
         incrementChanged: function(oldValue, newValue) {
           this.increment = Number(this.increment) || 0;
         },
         unitChanged: function(oldValue, newValue) {
           this.$.value.innerHTML = this.value;
-          this.updateUnitShown();
+          this.updateDisplay();
         },
         updateDisplay: function() {
-          if (this.unit){
-            this.updateUnitShown();
-          }
-        },
-        updateUnitShown: function() {
           if (this.unit) {
             var unit = this.unit.trim();
 
@@ -96,8 +87,8 @@
             this.$.unit.innerHTML = "";
           }
         },
-        valueChanged: function(oldValue, newValue) {
-          // This function is called as a side-effect of countUp/countDown.
+        valueChanged: function() {
+          this.broadcast("currentCount", this.value);
           this.updateDisplay();
         },
         countUp: function() {
@@ -107,8 +98,7 @@
           this.value = Number(this.value) - Number(this.increment, 10);
         },
         resetCount: function() {
-          this.count = 0;
-          this.updateDisplay();
+          this.value = 0;
         }
       });
     </script>
