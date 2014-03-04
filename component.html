@@ -3,8 +3,8 @@
     <link rel="stylesheet" href="component.css">
     <div class="counter">
       <div class="count-wrapper">
-        <span id="value" class="count">{{value}}</span>
-        <span id="unit" class="count-label"></span>
+        <span class="count">{{value}}</span>
+        <span class="count-label">{{displayUnit}}</span>
       </div>
     </div>
     <shadow></shadow>
@@ -22,7 +22,7 @@
         "listeners": {
           "countUp": {
             "description": "Increment the total by the increment value",
-            "label": "Count Up",
+            "label": "Count Up!",
             "default" : true
           },
           "countDown": {
@@ -56,8 +56,9 @@
         ready: function() {
           this.increment = Number(this.increment) || 1;
           this.value = Number(this.value) || 0;
-          this.updateDisplay();
           this.super();
+          this.displayUnit = this.unit;
+          this.updateUnit();
         },
         value: 0,
         increment: 1,
@@ -65,27 +66,29 @@
         incrementChanged: function(oldValue, newValue) {
           this.increment = Number(this.increment) || 0;
         },
-        unitChanged: function(oldValue, newValue) {
-          this.$.value.innerHTML = this.value;
-          this.updateDisplay();
-        },
-        updateDisplay: function() {
+        updateUnit : function(){
           if (this.unit) {
             var unit = this.unit.trim();
-
             if (unit.length > 0) {
-              var pluralChar = Number(this.value) !== 1 && unit[unit.length - 1] !== 's' ? 's' : '';
-              pluralChar = unit[unit.length - 1] === unit[unit.length - 1].toUpperCase() ? pluralChar.toUpperCase() : pluralChar;
-              this.$.unit.innerHTML = " " + unit + pluralChar;
+
+              var pluralChar = "";
+              if((Number(this.value) !== 1) && (unit[unit.length - 1] !== 's')){
+                pluralChar = "s";
+              }
+
+              if(unit[unit.length - 1] === unit[unit.length - 1].toUpperCase()) {
+                pluralChar = pluralChar.toUpperCase()
+              }
+              this.displayUnit = " " + unit + pluralChar;
             }
           }
-          else {
-            this.$.unit.innerHTML = "";
-          }
+        },
+        unitChanged: function() {
+          this.updateUnit();
         },
         valueChanged: function() {
           this.broadcast("currentCount", this.value);
-          this.updateDisplay();
+          this.updateUnit();
         },
         countUp: function() {
           this.value = Number(this.value) + Number(this.increment, 10);
