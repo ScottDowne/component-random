@@ -1,41 +1,39 @@
-<polymer-element name="ceci-counter" extends="ceci-element" attributes="unit increment value">
+<polymer-element name="ceci-random" extends="ceci-element" attributes="min max value" min="0" max="9">
   <ceci-definition>
     {
-      "name": "Counter",
+      "name": "Random",
       "thumbnail": "./thumbnail.png",
-      "description": "Listens for a message and counts",
+      "description": "Generates a random number",
       "broadcasts": {
-        "currentCount": {
-          "label": "Current Count",
-          "description": "Broadcasts the current count."
+        "send": {
+          "label": "Send random number",
+          "description": "Sends the random number if explicitly asked to."
+        },
+        "changed": {
+          "label": "Random number changed",
+          "description": "Sends the newly generated number."
         }
       },
       "listeners": {
-        "countUp": {
-          "description": "Increment the total by the increment value",
-          "label": "Count Up!",
-          "default" : true
+        "generate": {
+          "description": "Generate a random number between min and max",
+          "label": "Generates a random number"
         },
-        "countDown": {
-          "description": "Decrement the total by the increment value",
-          "label": "Count Down"
-        },
-        "resetCount": {
-          "description": "Reset the total to 0.",
-          "label": "Reset Count"
+        "send": {
+          "description": "Send the random number out",
+          "label": "Send random number"
         }
       },
       "attributes": {
-        "unit": {
-          "description": "Name for items which are being counted.",
-          "label": "Unit",
-          "editable": "text"
+        "min": {
+          "description": "",
+          "label": "Min",
+          "editable": "number"
         },
-        "increment": {
-          "description": "Count up or down with this number.",
-          "label": "Increment By",
-          "editable": "number",
-          "min" : 1
+        "max": {
+          "description": "",
+          "label": "Max",
+          "editable": "number"
         }
       }
     }
@@ -44,60 +42,29 @@
     <link rel="stylesheet" href="component.css">
     <div class="counter">
       <div class="count-wrapper">
-        <span class="count">{{value}}</span>
-        <span class="count-label">{{displayUnit}}</span>
+        <span class="count">random {{value}}</span>
       </div>
     </div>
     <shadow></shadow>
   </template>
   <tags>starter,math</tags>
     <script>
-      Polymer("ceci-counter", {
+      Polymer("ceci-random", {
         ready: function() {
-          this.increment = Number(this.increment) || 1;
           this.value = Number(this.value) || 0;
           this.super();
-          this.displayUnit = this.unit;
-          this.updateUnit();
         },
         value: 0,
-        increment: 1,
-        unit: 'Sprocket',
-        incrementChanged: function(oldValue, newValue) {
-          this.increment = Number(this.increment) || 0;
-        },
-        updateUnit : function(){
-          if (this.unit) {
-            var unit = this.unit.trim();
-            if (unit.length > 0) {
-
-              var pluralChar = "";
-              if((Number(this.value) !== 1) && (unit[unit.length - 1] !== 's')){
-                pluralChar = "s";
-              }
-
-              if(unit[unit.length - 1] === unit[unit.length - 1].toUpperCase()) {
-                pluralChar = pluralChar.toUpperCase()
-              }
-              this.displayUnit = " " + unit + pluralChar;
-            }
-          }
-        },
-        unitChanged: function() {
-          this.updateUnit();
-        },
         valueChanged: function() {
-          this.broadcast("currentCount", this.value);
-          this.updateUnit();
+          this.broadcast("changed", this.value);
         },
-        countUp: function() {
-          this.value = Number(this.value) + Number(this.increment, 10);
+        generate: function() {
+          var max = Number(this.max);
+          var min = Number(this.min);
+          this.value = Math.floor(Math.random() * (max - min + 1)) + min;
         },
-        countDown: function() {
-          this.value = Number(this.value) - Number(this.increment, 10);
-        },
-        resetCount: function() {
-          this.value = 0;
+        send: function() {
+          this.broadcast("send", this.value);
         }
       });
     </script>
